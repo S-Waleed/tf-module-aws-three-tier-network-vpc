@@ -1,21 +1,28 @@
-variable ec2_iam_role_name {
+variable vpc_cidr {
   type = string
-
-  validation {
-    condition     = length(var.ec2_iam_role_name) > 4 && substr(var.ec2_iam_role_name, 0, 4) == "svc-"
-    error_message = "The ec2_iam_role_name value must be a valid IAM role name, starting with \"svc-\"."
-  }
+  default = "10.0.0.0/16"
 }
 
-variable policy_description {
+variable public_zone_a_subnet_cidr {
+  type = string
+  default = "10.0.1.0/28"
+}
+
+variable public_zone_b_subnet_cidr {
+  type = string
+  default = "10.0.2.0/28"
+}
+
+variable vpc_name {
   type = string
 
   validation {
     condition     = length(var.policy_description) > 4
-    error_message = "The policy_description value must contain more than 4 characters."
+    error_message = "The vpc_name value must contain more than 4 characters."
   }
 }
 
-variable assume_role_policy {}
-
-variable policy {}
+variable additional_tags {
+  type = map
+  description = "Common tags for every resource"
+}
