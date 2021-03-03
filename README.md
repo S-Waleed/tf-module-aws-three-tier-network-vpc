@@ -1,7 +1,9 @@
-# iam-ec2-role
+# Three tier VPC module
 
 ## Description
-Terraform module that creates AWS IAM policy, creates IAM role specifically for EC2 instances, then attaches the IAM policy to the EC2 IAM role. 
+
+Creates a VPC network with a public and private subnets.
 
 ## Author
-Waleed from https://cloudly.engineer
+
+Waleed from <https://cloudly.engineer>
