@@ -8,12 +8,12 @@ resource "aws_vpc" "this" {
   tags = merge(
     var.additional_tags,
     {
-      Name = var.vpc_name
+      Name = "${var.vpc_name}-vpc"
     }
   )
 }
 
-# Create a route table
+# Create the route table
 resource "aws_route_table" "this" {
   vpc_id = aws_vpc.this.id
 
@@ -27,23 +27,97 @@ resource "aws_route_table" "this" {
 
 # Create the public subnets
 resource "aws_subnet" "public_zone_a" {
-  vpc_id                  = aws_vpc.main.id
+  vpc_id                  = aws_vpc.this.id
   cidr_block              = var.public_zone_a_subnet_cidr
-  availability_zone       = "a"
+  availability_zone       = "${var.aws_region}a"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Main"
+    Name = "${var.vpc_name}-public-subnet-a"
   }
 }
 
 resource "aws_subnet" "public_zone_b" {
-  vpc_id                  = aws_vpc.main.id
+  vpc_id                  = aws_vpc.this.id
   cidr_block              = var.public_zone_b_subnet_cidr
-  availability_zone       = "b"
+  availability_zone       = "${var.aws_region}b"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Main"
+    Name = "${var.vpc_name}-public-subnet-b"
   }
 }
+
+resource "aws_subnet" "web_zone_a" {
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = var.web_zone_a_subnet_cidr
+  availability_zone       = "${var.aws_region}a"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.vpc_name}-web-subnet-a"
+  }
+}
+
+resource "aws_subnet" "web_zone_b" {
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = var.web_zone_b_subnet_cidr
+  availability_zone       = "${var.aws_region}b"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.vpc_name}-web-subnet-b"
+  }
+}
+
+resource "aws_subnet" "app_zone_a" {
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = var.app_zone_a_subnet_cidr
+  availability_zone       = "${var.aws_region}a"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.vpc_name}-app-subnet-a"
+  }
+}
+
+resource "aws_subnet" "app_zone_b" {
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = var.app_zone_b_subnet_cidr
+  availability_zone       = "${var.aws_region}b"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.vpc_name}-app-subnet-b"
+  }
+}
+
+resource "aws_subnet" "data_zone_a" {
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = var.data_zone_a_subnet_cidr
+  availability_zone       = "${var.aws_region}a"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.vpc_name}-data-subnet-a"
+  }
+}
+
+resource "aws_subnet" "data_zone_b" {
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = var.data_zone_b_subnet_cidr
+  availability_zone       = "${var.aws_region}b"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.vpc_name}-data-subnet-b"
+  }
+}
+
+# Associate the subnets with the route table
+
+# Set as main route table
+
+# NACLs
+
+# Security Groups
