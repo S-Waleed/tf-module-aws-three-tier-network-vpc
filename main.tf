@@ -235,4 +235,41 @@ resource "aws_default_network_acl" "private" {
 # default_security_group_id
 
 # Enhancements
-# Reserve EIPs, Endpoints
+#  Endpoints
+
+# Charges may occur
+
+# Reserve EIPs
+resource "aws_eip" "nat" {
+  vpc = true
+
+  tags = {
+    Name = "${var.vpc_name}-eip-nat"
+  }
+
+  depends_on = [aws_internet_gateway.this]
+
+}
+
+# NAT Gateway
+resource "aws_nat_gateway" "zone_a" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public[0].id
+
+  tags = {
+    Name = "${var.vpc_name}-nat-gateway-aza"
+  }
+
+  depends_on = [aws_internet_gateway.this, aws_subnet.public]
+}
+
+resource "aws_nat_gateway" "zone_b" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public[1].id
+
+  tags = {
+    Name = "${var.vpc_name}-nat-gateway-azb"
+  }
+
+  depends_on = [aws_internet_gateway.this, aws_subnet.public]
+}
