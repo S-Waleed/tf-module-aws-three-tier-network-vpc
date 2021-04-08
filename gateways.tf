@@ -28,5 +28,7 @@ resource "aws_nat_gateway" "zone_a" {
     Name = "${var.vpc_name}-nat-gateway-aza"
   }
 
-  depends_on = [aws_subnet.public]
+  depends_on = [
+    aws_subnet.public
+  ]
 }

@@ -18,6 +18,10 @@ resource "aws_route_table" "public" {
   tags = {
     Name = "${var.vpc_name}-public-route-table"
   }
+
+  depends_on = [
+    aws_internet_gateway.this
+  ]
 }
 
 # Associate the public subnets with the public route table
@@ -41,6 +45,10 @@ resource "aws_route_table" "private" {
   tags = {
     Name = "${var.vpc_name}-private-route-table"
   }
+
+  depends_on = [
+    aws_nat_gateway.zone_a
+  ]
 }
 
 resource "aws_route_table" "data" {
