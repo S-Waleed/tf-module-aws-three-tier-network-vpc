@@ -35,7 +35,7 @@ resource "aws_network_acl" "public" {
     to_port    = 80
   }
 
-  # Allow ephermeral ports from the internet
+  # Allow the ephemeral ports from the internet
   ingress {
     protocol   = "6"
     rule_no    = 120

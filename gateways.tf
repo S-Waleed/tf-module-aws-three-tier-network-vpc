@@ -19,13 +19,37 @@ resource "aws_eip" "nat_a" {
 
 }
 
-# NAT Gateway
+# NAT Gateway in AZ A
 resource "aws_nat_gateway" "zone_a" {
   allocation_id = aws_eip.nat_a.id
   subnet_id     = aws_subnet.public[0].id
 
   tags = {
     Name = "${var.vpc_name}-nat-gateway-aza"
+  }
+
+  depends_on = [
+    aws_subnet.public
+  ]
+}
+
+# Reserve EIPs
+resource "aws_eip" "nat_b" {
+  vpc = true
+
+  tags = {
+    Name = "${var.vpc_name}-eip-nat-b"
+  }
+
+}
+
+# NAT Gateway in AZ B
+resource "aws_nat_gateway" "zone_b" {
+  allocation_id = aws_eip.nat_b.id
+  subnet_id     = aws_subnet.public[1].id
+
+  tags = {
+    Name = "${var.vpc_name}-nat-gateway-azb"
   }
 
   depends_on = [
