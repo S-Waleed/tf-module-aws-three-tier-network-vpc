@@ -42,11 +42,6 @@ resource "aws_route_table" "private" {
     nat_gateway_id = aws_nat_gateway.zone_a.id
   }
 
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.zone_b.id
-  }
-
   tags = {
     Name = "${var.vpc_name}-private-route-table"
   }
