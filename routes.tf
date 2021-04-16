@@ -32,8 +32,8 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# Create a route table for the web subnets
-# Uses NAT gateway
+# Create a route table for the web and app subnets in AZ A
+# Uses NAT gateway in AZ A
 resource "aws_route_table" "private_aza" {
   vpc_id = aws_vpc.this.id
 
@@ -51,6 +51,8 @@ resource "aws_route_table" "private_aza" {
   ]
 }
 
+# Create a route table for the web and app subnets in AZ B
+# Uses NAT gateway in AZ B
 resource "aws_route_table" "private_azb" {
   vpc_id = aws_vpc.this.id
 
@@ -76,7 +78,7 @@ resource "aws_route_table" "data" {
   }
 }
 
-# Associate these subnets with the private route table
+# Associate these subnets with the private route tables accordingly
 resource "aws_route_table_association" "web_aza" {
   subnet_id      = aws_subnet.web[0].id
   route_table_id = aws_route_table.private_aza.id
