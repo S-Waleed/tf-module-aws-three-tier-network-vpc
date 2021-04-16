@@ -77,18 +77,32 @@ resource "aws_route_table" "data" {
 }
 
 # Associate these subnets with the private route table
-resource "aws_route_table_association" "web" {
+resource "aws_route_table_association" "web_aza" {
   count = length(var.web_subnet_cidrs)
 
-  subnet_id      = element(aws_subnet.web.*.id, count.index)
-  route_table_id = aws_route_table.private.id
+  subnet_id      = element(aws_subnet.web[0].id, count.index)
+  route_table_id = aws_route_table.private_aza.id
 }
 
-resource "aws_route_table_association" "app" {
+resource "aws_route_table_association" "app_aza" {
   count = length(var.app_subnet_cidrs)
 
-  subnet_id      = element(aws_subnet.app.*.id, count.index)
-  route_table_id = aws_route_table.private.id
+  subnet_id      = element(aws_subnet.app[0].id, count.index)
+  route_table_id = aws_route_table.private_aza.id
+}
+
+resource "aws_route_table_association" "web_azb" {
+  count = length(var.web_subnet_cidrs)
+
+  subnet_id      = element(aws_subnet.web[1].id, count.index)
+  route_table_id = aws_route_table.private_azb.id
+}
+
+resource "aws_route_table_association" "app_azb" {
+  count = length(var.app_subnet_cidrs)
+
+  subnet_id      = element(aws_subnet.app[1].id, count.index)
+  route_table_id = aws_route_table.private_azb.id
 }
 
 resource "aws_route_table_association" "data" {
