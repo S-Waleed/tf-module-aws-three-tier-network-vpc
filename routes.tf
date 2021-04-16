@@ -34,7 +34,7 @@ resource "aws_route_table_association" "public" {
 
 # Create a route table for the web subnets
 # Uses NAT gateway
-resource "aws_route_table" "private" {
+resource "aws_route_table" "private_aza" {
   vpc_id = aws_vpc.this.id
 
   route {
@@ -43,11 +43,28 @@ resource "aws_route_table" "private" {
   }
 
   tags = {
-    Name = "${var.vpc_name}-private-route-table"
+    Name = "${var.vpc_name}-private-route-table-aza"
   }
 
   depends_on = [
     aws_nat_gateway.zone_a
+  ]
+}
+
+resource "aws_route_table" "private_azb" {
+  vpc_id = aws_vpc.this.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.zone_b.id
+  }
+
+  tags = {
+    Name = "${var.vpc_name}-private-route-table-azb"
+  }
+
+  depends_on = [
+    aws_nat_gateway.zone_b
   ]
 }
 
